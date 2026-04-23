@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-label="Plus Academy innovation lab scene with students learning technology">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="55%" stop-color="#FBFEFF"/>
+      <stop offset="100%" stop-color="#F6FCFF"/>
+    </linearGradient>
+
+    <radialGradient id="glowTeal" cx="50%" cy="45%" r="65%">
+      <stop offset="0%" stop-color="#11D4C0" stop-opacity="0.26"/>
+      <stop offset="40%" stop-color="#11D4C0" stop-opacity="0.12"/>
+      <stop offset="75%" stop-color="#11D4C0" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="glowBlue" cx="65%" cy="55%" r="70%">
+      <stop offset="0%" stop-color="#62AAFF" stop-opacity="0.18"/>
+      <stop offset="55%" stop-color="#62AAFF" stop-opacity="0.08"/>
+      <stop offset="85%" stop-color="#62AAFF" stop-opacity="0"/>
+    </radialGradient>
+
+    <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.92"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.72"/>
+    </linearGradient>
+
+    <linearGradient id="screen" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0B3D73" stop-opacity="0.10"/>
+      <stop offset="50%" stop-color="#11D4C0" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#62AAFF" stop-opacity="0.10"/>
+    </linearGradient>
+
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#11D4C0" stop-opacity="0"/>
+      <stop offset="45%" stop-color="#11D4C0" stop-opacity="0.75"/>
+      <stop offset="60%" stop-color="#62AAFF" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#11D4C0" stop-opacity="0"/>
+    </linearGradient>
+
+    <filter id="softBlur" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="18" />
+    </filter>
+
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="16" flood-color="#0B3D73" flood-opacity="0.12"/>
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#11D4C0" flood-opacity="0.10"/>
+    </filter>
+
+    <filter id="tinyShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#0B3D73" flood-opacity="0.10"/>
+    </filter>
+  </defs>
+
+  <!-- Base -->
+  <rect width="1600" height="900" fill="url(#bg)"/>
+
+  <!-- Ambient premium glows -->
+  <g opacity="1">
+    <ellipse cx="520" cy="330" rx="520" ry="380" fill="url(#glowTeal)" filter="url(#softBlur)"/>
+    <ellipse cx="1120" cy="520" rx="560" ry="420" fill="url(#glowBlue)" filter="url(#softBlur)"/>
+  </g>
+
+  <!-- Subtle grid / tech texture -->
+  <g opacity="0.18">
+    <path d="M0 220H1600" stroke="#0B3D73" stroke-opacity="0.10" stroke-width="1"/>
+    <path d="M0 420H1600" stroke="#0B3D73" stroke-opacity="0.10" stroke-width="1"/>
+    <path d="M0 620H1600" stroke="#0B3D73" stroke-opacity="0.10" stroke-width="1"/>
+    <path d="M320 0V900" stroke="#0B3D73" stroke-opacity="0.08" stroke-width="1"/>
+    <path d="M650 0V900" stroke="#0B3D73" stroke-opacity="0.08" stroke-width="1"/>
+    <path d="M980 0V900" stroke="#0B3D73" stroke-opacity="0.08" stroke-width="1"/>
+    <path d="M1310 0V900" stroke="#0B3D73" stroke-opacity="0.08" stroke-width="1"/>
+  </g>
+
+  <!-- Edge-to-edge light sweeps (static illustration of motion language) -->
+  <g opacity="0.75">
+    <path d="M-120 240C180 150 420 120 740 160C1040 198 1240 170 1720 70" stroke="url(#accent)" stroke-width="26" stroke-linecap="round" opacity="0.36" />
+    <path d="M-140 720C220 610 460 560 820 590C1160 618 1300 600 1720 520" stroke="url(#accent)" stroke-width="30" stroke-linecap="round" opacity="0.28" />
+    <path d="M-100 470C260 360 470 340 840 375C1180 408 1320 390 1710 310" stroke="url(#accent)" stroke-width="16" stroke-linecap="round" opacity="0.22" />
+  </g>
+
+  <!-- Main wall display -->
+  <g filter="url(#shadow)">
+    <rect x="260" y="150" width="1080" height="420" rx="26" fill="url(#glass)" stroke="#0B3D73" stroke-opacity="0.14"/>
+    <rect x="292" y="184" width="1016" height="352" rx="18" fill="url(#screen)" stroke="#11D4C0" stroke-opacity="0.18"/>
+
+    <!-- Dashboard header -->
+    <rect x="318" y="208" width="390" height="34" rx="10" fill="#FFFFFF" opacity="0.82"/>
+    <circle cx="336" cy="225" r="6" fill="#11D4C0" opacity="0.85"/>
+    <circle cx="356" cy="225" r="6" fill="#62AAFF" opacity="0.75"/>
+    <circle cx="376" cy="225" r="6" fill="#0B3D73" opacity="0.35"/>
+    <rect x="400" y="216" width="260" height="18" rx="9" fill="#0B3D73" opacity="0.10"/>
+
+    <!-- Course tiles -->
+    <g opacity="0.92">
+      <!-- Tile helper: simple label blocks (no tiny illegible text) -->
+      <g>
+        <rect x="318" y="270" width="300" height="110" rx="16" fill="#FFFFFF" opacity="0.86" stroke="#11D4C0" stroke-opacity="0.22"/>
+        <rect x="340" y="292" width="56" height="56" rx="14" fill="#11D4C0" opacity="0.18"/>
+        <path d="M355 320h26M355 334h18" stroke="#0B3D73" stroke-opacity="0.35" stroke-width="4" stroke-linecap="round"/>
+        <rect x="412" y="300" width="180" height="14" rx="7" fill="#0B3D73" opacity="0.16"/>
+        <rect x="412" y="324" width="150" height="12" rx="6" fill="#0B3D73" opacity="0.10"/>
+        <rect x="412" y="346" width="130" height="12" rx="6" fill="#0B3D73" opacity="0.10"/>
+        <rect x="412" y="370" width="110" height="10" rx="5" fill="#11D4C0" opacity="0.18"/>
+      </g>
+
+      <g>
+        <rect x="658" y="270" width="300" height="110" rx="16" fill="#FFFFFF" opacity="0.86" stroke="#62AAFF" stroke-opacity="0.22"/>
+        <rect x="680" y="292" width="56" height="56" rx="14" fill="#62AAFF" opacity="0.16"/>
+        <path d="M694 342c6-16 22-28 40-28" stroke="#0B3D73" stroke-opacity="0.32" stroke-width="4" stroke-linecap="round"/>
+        <rect x="752" y="300" width="190" height="14" rx="7" fill="#0B3D73" opacity="0.16"/>
+        <rect x="752" y="324" width="158" height="12" rx="6" fill="#0B3D73" opacity="0.10"/>
+        <rect x="752" y="346" width="138" height="12" rx="6" fill="#0B3D73" opacity="0.10"/>
+        <rect x="752" y="370" width="120" height="10" rx="5" fill="#62AAFF" opacity="0.18"/>
+      </g>
+
+      <g>
+        <rect x="998" y="270" width="310" height="110" rx="16" fill="#FFFFFF" opacity="0.86" stroke="#11D4C0" stroke-opacity="0.20"/>
+        <rect x="1020" y="292" width="56" height="56" rx="14" fill="#11D4C0" opacity="0.14"/>
+        <path d="M1033 328h30" stroke="#0B3D73" stroke-opacity="0.34" stroke-width="4" stroke-linecap="round"/>
+        <path d="M1048 312v34" stroke="#0B3D73" stroke-opacity="0.22" stroke-width="4" stroke-linecap="round"/>
+        <rect x="1092" y="300" width="198" height="14" rx="7" fill="#0B3D73" opacity="0.16"/>
+        <rect x="1092" y="324" width="160" height="12" rx="6" fill="#0B3D73" opacity="0.10"/>
+        <rect x="1092" y="346" width="142" height="12" rx="6" fill="#0B3D73" opacity="0.10"/>
+        <rect x="1092" y="370" width="118" height="10" rx="5" fill="#11D4C0" opacity="0.18"/>
+      </g>
+
+      <g>
+        <rect x="318" y="400" width="360" height="110" rx="16" fill="#FFFFFF" opacity="0.86" stroke="#0B3D73" stroke-opacity="0.14"/>
+        <rect x="340" y="422" width="56" height="56" rx="14" fill="#0B3D73" opacity="0.10"/>
+        <path d="M355 438h26M355 456h18" stroke="#0B3D73" stroke-opacity="0.28" stroke-width="4" stroke-linecap="round"/>
+        <rect x="412" y="430" width="230" height="14" rx="7" fill="#0B3D73" opacity="0.16"/>
+        <rect x="412" y="454" width="190" height="12" rx="6" fill="#0B3D73" opacity="0.10"/>
+        <rect x="412" y="476" width="160" height="12" rx="6" fill="#0B3D73" opacity="0.10"/>
+        <rect x="412" y="500" width="120" height="10" rx="5" fill="#11D4C0" opacity="0.18"/>
+      </g>
+
+      <g>
+        <rect x="708" y="400" width="600" height="110" rx="16" fill="#FFFFFF" opacity="0.86" stroke="#11D4C0" stroke-opacity="0.18"/>
+        <rect x="730" y="422" width="56" height="56" rx="14" fill="#11D4C0" opacity="0.14"/>
+        <path d="M745 450h26" stroke="#0B3D73" stroke-opacity="0.3" stroke-width="4" stroke-linecap="round"/>
+        <path d="M745 466h18" stroke="#0B3D73" stroke-opacity="0.22" stroke-width="4" stroke-linecap="round"/>
+        <rect x="802" y="430" width="300" height="14" rx="7" fill="#0B3D73" opacity="0.16"/>
+        <rect x="802" y="454" width="260" height="12" rx="6" fill="#0B3D73" opacity="0.10"/>
+        <rect x="802" y="476" width="220" height="12" rx="6" fill="#0B3D73" opacity="0.10"/>
+        <rect x="802" y="500" width="140" height="10" rx="5" fill="#62AAFF" opacity="0.18"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- Foreground collaboration table -->
+  <g filter="url(#tinyShadow)">
+    <path d="M260 690c150-60 360-88 540-88s390 28 540 88c28 10 46 34 46 62v62H214v-62c0-28 18-52 46-62z" fill="#FFFFFF" opacity="0.88" stroke="#0B3D73" stroke-opacity="0.12"/>
+    <path d="M290 705c140-44 330-66 510-66s370 22 510 66" stroke="#11D4C0" stroke-opacity="0.22" stroke-width="3" stroke-linecap="round"/>
+  </g>
+
+  <!-- Laptops + devices -->
+  <g opacity="0.98">
+    <!-- Laptop left -->
+    <g transform="translate(430 600)">
+      <rect x="0" y="0" width="220" height="140" rx="18" fill="#FFFFFF" opacity="0.92" stroke="#0B3D73" stroke-opacity="0.14"/>
+      <rect x="16" y="16" width="188" height="92" rx="12" fill="url(#screen)" stroke="#11D4C0" stroke-opacity="0.18"/>
+      <rect x="22" y="24" width="110" height="10" rx="5" fill="#0B3D73" opacity="0.18"/>
+      <rect x="22" y="42" width="150" height="8" rx="4" fill="#0B3D73" opacity="0.10"/>
+      <rect x="22" y="58" width="120" height="8" rx="4" fill="#0B3D73" opacity="0.10"/>
+      <rect x="22" y="74" width="160" height="8" rx="4" fill="#0B3D73" opacity="0.10"/>
+      <rect x="0" y="120" width="220" height="20" rx="10" fill="#0B3D73" opacity="0.06"/>
+      <rect x="78" y="126" width="64" height="8" rx="4" fill="#11D4C0" opacity="0.24"/>
+    </g>
+
+    <!-- Laptop right -->
+    <g transform="translate(950 600)">
+      <rect x="0" y="0" width="220" height="140" rx="18" fill="#FFFFFF" opacity="0.92" stroke="#0B3D73" stroke-opacity="0.14"/>
+      <rect x="16" y="16" width="188" height="92" rx="12" fill="url(#screen)" stroke="#62AAFF" stroke-opacity="0.18"/>
+      <rect x="22" y="24" width="128" height="10" rx="5" fill="#0B3D73" opacity="0.18"/>
+      <rect x="22" y="42" width="156" height="8" rx="4" fill="#0B3D73" opacity="0.10"/>
+      <rect x="22" y="58" width="140" height="8" rx="4" fill="#0B3D73" opacity="0.10"/>
+      <rect x="22" y="74" width="166" height="8" rx="4" fill="#0B3D73" opacity="0.10"/>
+      <rect x="0" y="120" width="220" height="20" rx="10" fill="#0B3D73" opacity="0.06"/>
+      <rect x="74" y="126" width="72" height="8" rx="4" fill="#62AAFF" opacity="0.22"/>
+    </g>
+
+    <!-- Mobile UI panel -->
+    <g transform="translate(730 610)">
+      <rect x="0" y="0" width="140" height="170" rx="26" fill="#FFFFFF" opacity="0.94" stroke="#0B3D73" stroke-opacity="0.14"/>
+      <rect x="18" y="18" width="104" height="124" rx="16" fill="url(#screen)" stroke="#11D4C0" stroke-opacity="0.18"/>
+      <rect x="28" y="30" width="84" height="10" rx="5" fill="#0B3D73" opacity="0.16"/>
+      <rect x="28" y="48" width="60" height="8" rx="4" fill="#0B3D73" opacity="0.10"/>
+      <rect x="28" y="66" width="92" height="8" rx="4" fill="#0B3D73" opacity="0.10"/>
+      <rect x="28" y="84" width="70" height="8" rx="4" fill="#0B3D73" opacity="0.10"/>
+      <rect x="28" y="104" width="84" height="24" rx="12" fill="#11D4C0" opacity="0.14"/>
+      <circle cx="70" cy="156" r="8" fill="#0B3D73" opacity="0.10"/>
+    </g>
+
+    <!-- IoT device -->
+    <g transform="translate(660 770)">
+      <rect x="0" y="0" width="110" height="58" rx="16" fill="#FFFFFF" opacity="0.92" stroke="#0B3D73" stroke-opacity="0.12"/>
+      <circle cx="26" cy="30" r="10" fill="#11D4C0" opacity="0.16"/>
+      <circle cx="26" cy="30" r="4" fill="#11D4C0" opacity="0.55"/>
+      <rect x="46" y="18" width="50" height="8" rx="4" fill="#0B3D73" opacity="0.12"/>
+      <rect x="46" y="32" width="40" height="8" rx="4" fill="#0B3D73" opacity="0.10"/>
+    </g>
+
+    <!-- Cybersecurity mini dashboard -->
+    <g transform="translate(840 770)">
+      <rect x="0" y="0" width="140" height="58" rx="16" fill="#FFFFFF" opacity="0.92" stroke="#11D4C0" stroke-opacity="0.14"/>
+      <path d="M28 18c10 0 18 8 18 18s-8 18-18 18-18-8-18-18 8-18 18-18z" fill="#62AAFF" opacity="0.14"/>
+      <path d="M28 22c8 0 14 6 14 14s-6 14-14 14-14-6-14-14 6-14 14-14z" fill="#11D4C0" opacity="0.12"/>
+      <path d="M28 28l6 6-6 10-6-10 6-6z" fill="#0B3D73" opacity="0.20"/>
+      <rect x="58" y="18" width="70" height="8" rx="4" fill="#0B3D73" opacity="0.12"/>
+      <rect x="58" y="32" width="56" height="8" rx="4" fill="#0B3D73" opacity="0.10"/>
+      <rect x="58" y="46" width="64" height="6" rx="3" fill="#11D4C0" opacity="0.16"/>
+    </g>
+  </g>
+
+  <!-- People (stylized, premium, non-cartoon) -->
+  <g opacity="0.98">
+    <!-- Student group left -->
+    <g transform="translate(360 520)">
+      <circle cx="56" cy="56" r="28" fill="#0B3D73" opacity="0.10"/>
+      <path d="M20 168c8-48 36-76 72-76s64 28 72 76" fill="#0B3D73" opacity="0.08"/>
+      <path d="M26 168c8-42 32-66 66-66s58 24 66 66" fill="#11D4C0" opacity="0.08"/>
+    </g>
+    <g transform="translate(520 520)">
+      <circle cx="56" cy="56" r="28" fill="#0B3D73" opacity="0.10"/>
+      <path d="M20 168c8-48 36-76 72-76s64 28 72 76" fill="#0B3D73" opacity="0.08"/>
+      <path d="M26 168c8-42 32-66 66-66s58 24 66 66" fill="#62AAFF" opacity="0.06"/>
+    </g>
+
+    <!-- Mentor center -->
+    <g transform="translate(760 470)">
+      <circle cx="80" cy="70" r="34" fill="#0B3D73" opacity="0.10"/>
+      <path d="M30 250c10-64 52-104 100-104s90 40 100 104" fill="#0B3D73" opacity="0.08"/>
+      <path d="M46 250c10-52 44-84 84-84s74 32 84 84" fill="#11D4C0" opacity="0.07"/>
+      <!-- Guiding arm gesture -->
+      <path d="M150 172c40 10 68 18 104 44" stroke="#0B3D73" stroke-opacity="0.20" stroke-width="10" stroke-linecap="round"/>
+      <path d="M246 214l26 16" stroke="#11D4C0" stroke-opacity="0.25" stroke-width="8" stroke-linecap="round"/>
+    </g>
+
+    <!-- Student group right -->
+    <g transform="translate(1040 520)">
+      <circle cx="56" cy="56" r="28" fill="#0B3D73" opacity="0.10"/>
+      <path d="M20 168c8-48 36-76 72-76s64 28 72 76" fill="#0B3D73" opacity="0.08"/>
+      <path d="M26 168c8-42 32-66 66-66s58 24 66 66" fill="#11D4C0" opacity="0.07"/>
+    </g>
+    <g transform="translate(1200 520)">
+      <circle cx="56" cy="56" r="28" fill="#0B3D73" opacity="0.10"/>
+      <path d="M20 168c8-48 36-76 72-76s64 28 72 76" fill="#0B3D73" opacity="0.08"/>
+      <path d="M26 168c8-42 32-66 66-66s58 24 66 66" fill="#62AAFF" opacity="0.06"/>
+    </g>
+  </g>
+
+  <!-- Bottom label bar (subtle, fits card) -->
+  <g filter="url(#tinyShadow)">
+    <rect x="290" y="780" width="1020" height="74" rx="18" fill="#FFFFFF" opacity="0.86" stroke="#0B3D73" stroke-opacity="0.10"/>
+    <rect x="318" y="806" width="260" height="12" rx="6" fill="#11D4C0" opacity="0.22"/>
+    <rect x="318" y="828" width="340" height="10" rx="5" fill="#0B3D73" opacity="0.10"/>
+    <rect x="1112" y="806" width="170" height="12" rx="6" fill="#62AAFF" opacity="0.18"/>
+    <rect x="1112" y="828" width="130" height="10" rx="5" fill="#0B3D73" opacity="0.10"/>
+  </g>
+</svg>
+
