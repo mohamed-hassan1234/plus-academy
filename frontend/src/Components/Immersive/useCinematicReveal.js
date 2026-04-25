@@ -4,8 +4,12 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export function useCinematicReveal(scopeRef) {
+export function useCinematicReveal(scopeRef, enabled = true) {
   useEffect(() => {
+    if (!enabled) {
+      return undefined;
+    }
+
     const scope = scopeRef.current;
 
     if (!scope) {
@@ -81,5 +85,5 @@ export function useCinematicReveal(scopeRef) {
     }, scope);
 
     return () => context.revert();
-  }, [scopeRef]);
+  }, [enabled, scopeRef]);
 }

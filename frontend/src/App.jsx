@@ -1,55 +1,61 @@
-import Home from "./pages/Home"
-import About from "./pages/About"
-import Curriculum from "./pages/Curriculum"
-import Alumni from "./pages/Alumni"
+import { Suspense, lazy } from "react"
 import Header from "./Components/Header"
 import Footer from "./Components/Footer"
-import Getstarted from "./pages/Getstarted"
-import Contact from "./pages/Contact"
-import Dashboard from "./Dashboard/Dashboard"
-import StudentsList from "./Dashboard/StudentsList"
-import ReadStudent from "./Dashboard/ReadStudent"
-import StudentCreate from "./Dashboard/StudentCreate"
-import ClassManagement from "./Dashboard/ClassManagement"
-import ClassStudents from "./Dashboard/ClassStudents"
-import ContactMessages from "./Dashboard/ContactMessages"
-import Attendance from "./Dashboard/Attendance"
-import AlumniManagement from "./Dashboard/AlumniManagement"
-import Hackthon from "./pages/Hackthon"
-import HackthonPost from "./Components/Hackthon/HackthonPost"
-import HackthonDetails from "./Components/Hackthon/HackthonDetails"
-import HackathonManagement from "./Dashboard/HackathonManagement"
-import HackathonRegistrations from "./Dashboard/HackathonRegistrations"
-import ReadHackathonRegistration from "./Dashboard/ReadHackathonRegistration"
-import RegisterHackthon from "./pages/RegisterHAckthon"
-import DashboardShell from "./Dashboard/DashboardShell"
-import DashboardLogin from "./pages/DashboardLogin"
-import DashboardRegister from "./pages/DashboardRegister"
-import ManageUsers from "./Dashboard/ManageUsers"
+import LoadingIntro from "./Components/Immersive/LoadingIntro"
 import { DashboardProtectedRoute } from "./context/DashboardAuthContext"
 import { Routes, Route } from "react-router-dom"
-import LoadingIntro from "./Components/Immersive/LoadingIntro"
+
+const Home = lazy(() => import("./pages/Home"))
+const About = lazy(() => import("./pages/About"))
+const Curriculum = lazy(() => import("./pages/Curriculum"))
+const Alumni = lazy(() => import("./pages/Alumni"))
+const Getstarted = lazy(() => import("./pages/Getstarted"))
+const Contact = lazy(() => import("./pages/Contact"))
+const Hackthon = lazy(() => import("./pages/Hackthon"))
+const HackthonDetails = lazy(() => import("./Components/Hackthon/HackthonDetails"))
+const RegisterHackthon = lazy(() => import("./pages/RegisterHAckthon"))
+const Dashboard = lazy(() => import("./Dashboard/Dashboard"))
+const StudentsList = lazy(() => import("./Dashboard/StudentsList"))
+const ReadStudent = lazy(() => import("./Dashboard/ReadStudent"))
+const StudentCreate = lazy(() => import("./Dashboard/StudentCreate"))
+const ClassManagement = lazy(() => import("./Dashboard/ClassManagement"))
+const ClassStudents = lazy(() => import("./Dashboard/ClassStudents"))
+const ContactMessages = lazy(() => import("./Dashboard/ContactMessages"))
+const Attendance = lazy(() => import("./Dashboard/Attendance"))
+const AlumniManagement = lazy(() => import("./Dashboard/AlumniManagement"))
+const HackathonManagement = lazy(() => import("./Dashboard/HackathonManagement"))
+const HackathonRegistrations = lazy(() => import("./Dashboard/HackathonRegistrations"))
+const ReadHackathonRegistration = lazy(() => import("./Dashboard/ReadHackathonRegistration"))
+const DashboardShell = lazy(() => import("./Dashboard/DashboardShell"))
+const DashboardLogin = lazy(() => import("./pages/DashboardLogin"))
+const DashboardRegister = lazy(() => import("./pages/DashboardRegister"))
+const ManageUsers = lazy(() => import("./Dashboard/ManageUsers"))
+
+function RouteFallback({ withHeaderOffset = false }) {
+  return <main className={`min-h-screen bg-white ${withHeaderOffset ? "pt-28" : ""}`} aria-hidden="true" />
+}
+
 function App () {
   return <>
   <Routes>
-      <Route path="/waji/register" element={<DashboardRegister />} />
-      <Route path="/waji/login" element={<DashboardLogin />} />
+      <Route path="/waji/register" element={<Suspense fallback={<RouteFallback />}><DashboardRegister /></Suspense>} />
+      <Route path="/waji/login" element={<Suspense fallback={<RouteFallback />}><DashboardLogin /></Suspense>} />
 
       <Route element={<DashboardProtectedRoute />}>
-        <Route path="/waji" element={<DashboardShell />}>
-          <Route index element={<Dashboard />} />
-          <Route path="manage-users" element={<ManageUsers />} />
-          <Route path="students" element={<StudentsList />} />
-          <Route path="students/:id" element={<ReadStudent />} />
-          <Route path="create" element={<StudentCreate />} />
-          <Route path="classes" element={<ClassManagement />} />
-          <Route path="classes/:className/students" element={<ClassStudents />} />
-          <Route path="attendance" element={<Attendance />} />
-          <Route path="alumni" element={<AlumniManagement />} />
-          <Route path="contacts" element={<ContactMessages />} />
-          <Route path="hackathons" element={<HackathonManagement />} />
-          <Route path="hackathon-registrations" element={<HackathonRegistrations />} />
-          <Route path="hackathon-registrations/:id" element={<ReadHackathonRegistration />} />
+        <Route path="/waji" element={<Suspense fallback={<RouteFallback />}><DashboardShell /></Suspense>}>
+          <Route index element={<Suspense fallback={<RouteFallback />}><Dashboard /></Suspense>} />
+          <Route path="manage-users" element={<Suspense fallback={<RouteFallback />}><ManageUsers /></Suspense>} />
+          <Route path="students" element={<Suspense fallback={<RouteFallback />}><StudentsList /></Suspense>} />
+          <Route path="students/:id" element={<Suspense fallback={<RouteFallback />}><ReadStudent /></Suspense>} />
+          <Route path="create" element={<Suspense fallback={<RouteFallback />}><StudentCreate /></Suspense>} />
+          <Route path="classes" element={<Suspense fallback={<RouteFallback />}><ClassManagement /></Suspense>} />
+          <Route path="classes/:className/students" element={<Suspense fallback={<RouteFallback />}><ClassStudents /></Suspense>} />
+          <Route path="attendance" element={<Suspense fallback={<RouteFallback />}><Attendance /></Suspense>} />
+          <Route path="alumni" element={<Suspense fallback={<RouteFallback />}><AlumniManagement /></Suspense>} />
+          <Route path="contacts" element={<Suspense fallback={<RouteFallback />}><ContactMessages /></Suspense>} />
+          <Route path="hackathons" element={<Suspense fallback={<RouteFallback />}><HackathonManagement /></Suspense>} />
+          <Route path="hackathon-registrations" element={<Suspense fallback={<RouteFallback />}><HackathonRegistrations /></Suspense>} />
+          <Route path="hackathon-registrations/:id" element={<Suspense fallback={<RouteFallback />}><ReadHackathonRegistration /></Suspense>} />
         </Route>
       </Route>
 
@@ -57,17 +63,19 @@ function App () {
         <>
           <LoadingIntro />
           <Header />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/curriculum" element={<Curriculum />} />
-            <Route path="/alumni" element={<Alumni />} /> 
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/getstarted" element={<Getstarted />} />
-            <Route path="/hackathons" element={<Hackthon />} />
-            <Route path="/hackathons/:id" element={<HackthonDetails />} />
-            <Route path="/hackathons/:id/register" element={<RegisterHackthon />} />
-          </Routes>
+          <Suspense fallback={<RouteFallback withHeaderOffset />}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/curriculum" element={<Curriculum />} />
+              <Route path="/alumni" element={<Alumni />} /> 
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/getstarted" element={<Getstarted />} />
+              <Route path="/hackathons" element={<Hackthon />} />
+              <Route path="/hackathons/:id" element={<HackthonDetails />} />
+              <Route path="/hackathons/:id/register" element={<RegisterHackthon />} />
+            </Routes>
+          </Suspense>
           <Footer />
         </>
       } />

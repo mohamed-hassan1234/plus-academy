@@ -44,7 +44,7 @@ function Header() {
 
   return (
     <header className={`immersive-nav ${isScrolled ? "immersive-nav--scrolled" : ""}`}>
-      <div className="immersive-nav__shell">
+      <div className="h-[-500px]  immersive-nav__shell">
         <div className="immersive-nav__inner">
           <Link to="/" className="immersive-nav__brand-link" aria-label="PlusAcademy home">
             <BrandLogo className="immersive-nav__logo" />
