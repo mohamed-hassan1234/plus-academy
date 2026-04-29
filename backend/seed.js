@@ -6,9 +6,9 @@ const { getMongoUri, maskMongoUri } = require("./config/database");
 const DashboardUser = require("./model/dashboardUserModel");
 
 const DASHBOARD_ACCOUNT = {
-  fullName: "Plus Academy Admin",
-  email: "admin@plusacademyhub.com",
-  password: "ChangeThisPassword123",
+  fullName: "Cabdi Hakim Bashir Cumar",
+  email: "enghakim@gmail.com",
+  password: "plus2026@!",
 };
 
 const hashPassword = (password, salt) =>
