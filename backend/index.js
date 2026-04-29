@@ -12,20 +12,11 @@ const hackathonRouter = require("./Router/hackathonRouter");
 const registrationRouter = require("./Router/registrationRouter");
 const alumniRouter = require("./Router/alumniRouter");
 const dashboardAuthRouter = require("./Router/dashboardAuthRouter");
+const { getMongoUri, maskMongoUri } = require("./config/database");
 
 const app = express();
 const PORT = Number(process.env.PORT) || 5000;
-
-const firstConfiguredValue = (...keys) =>
-  keys.map((key) => process.env[key]?.trim()).find(Boolean);
-
-const MONGODB_URI =
-  firstConfiguredValue(
-    "MONGODB_URI",
-    "MONGO_URI",
-    "MONGODB_URL",
-    "DATABASE_URL"
-  ) || "mongodb://127.0.0.1:27017/plus_academyhub";
+const MONGODB_URI = getMongoUri();
 const normalizeOrigin = (value = "") => value.trim().replace(/\/+$/, "");
 const defaultAllowedOrigins = [
   "https://plusacademyhub.com",
@@ -89,7 +80,7 @@ app.use("/api", dashboardAuthRouter);
 mongoose
   .connect(MONGODB_URI)
   .then(() => {
-    console.log(`Connected to MongoDB: ${MONGODB_URI}`);
+    console.log(`Connected to MongoDB: ${maskMongoUri(MONGODB_URI)}`);
   })
   .catch((err) => {
     console.log("MongoDB connection error:", err);
