@@ -1,10 +1,15 @@
 require("dotenv").config();
 
 const crypto = require("crypto");
-const readline = require("readline");
 const mongoose = require("mongoose");
 const { getMongoUri, maskMongoUri } = require("./config/database");
 const DashboardUser = require("./model/dashboardUserModel");
+
+const DASHBOARD_ACCOUNT = {
+  fullName: "Plus Academy Admin",
+  email: "admin@plusacademyhub.com",
+  password: "ChangeThisPassword123",
+};
 
 const hashPassword = (password, salt) =>
   crypto.scryptSync(password, salt, 64).toString("hex");
@@ -18,64 +23,10 @@ const createPasswordRecord = (password) => {
   };
 };
 
-const getArgValue = (name) => {
-  const prefix = `--${name}=`;
-  const arg = process.argv.find((value) => value.startsWith(prefix));
-
-  if (arg) {
-    return arg.slice(prefix.length).trim();
-  }
-
-  const flagIndex = process.argv.indexOf(`--${name}`);
-
-  if (flagIndex >= 0) {
-    return process.argv[flagIndex + 1]?.trim() || "";
-  }
-
-  return "";
-};
-
-const ask = (rl, question) =>
-  new Promise((resolve) => {
-    rl.question(question, (answer) => resolve(answer.trim()));
-  });
-
-const readSeedInput = async () => {
-  const positionalArgs = process.argv.slice(2).filter((value) => {
-    return value && !value.startsWith("--");
-  });
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-  });
-
-  try {
-    const fullName =
-      getArgValue("name") ||
-      process.env.DASHBOARD_ADMIN_NAME?.trim() ||
-      process.env.DASHBOARD_ADMIN_FULL_NAME?.trim() ||
-      positionalArgs[0]?.trim() ||
-      (await ask(rl, "Dashboard full name: "));
-    const email = (
-      getArgValue("email") ||
-      process.env.DASHBOARD_ADMIN_EMAIL?.trim() ||
-      positionalArgs[1]?.trim() ||
-      (await ask(rl, "Dashboard email: "))
-    ).toLowerCase();
-    const password =
-      getArgValue("password") ||
-      process.env.DASHBOARD_ADMIN_PASSWORD?.trim() ||
-      positionalArgs[2]?.trim() ||
-      (await ask(rl, "Dashboard password: "));
-
-    return { fullName, email, password };
-  } finally {
-    rl.close();
-  }
-};
-
 const seedDashboardUser = async () => {
-  const { fullName, email, password } = await readSeedInput();
+  const fullName = DASHBOARD_ACCOUNT.fullName.trim();
+  const email = DASHBOARD_ACCOUNT.email.trim().toLowerCase();
+  const password = DASHBOARD_ACCOUNT.password.trim();
 
   if (!fullName || !email || !password) {
     throw new Error("Full name, email, and password are required.");
