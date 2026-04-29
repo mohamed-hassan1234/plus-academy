@@ -58,7 +58,15 @@ const shouldUseFallback = (error) => {
   return (
     message.includes("API endpoint not found") ||
     message.includes("Failed to fetch") ||
-    message.includes("Unexpected server response")
+    message.includes("Unexpected server response") ||
+    message.includes("Could not save alumni") ||
+    message.includes("Could not delete alumni") ||
+    message.includes("Error fetching alumni") ||
+    message.includes("Error creating alumni") ||
+    message.includes("Error updating alumni") ||
+    message.includes("Error deleting alumni") ||
+    message.includes("Alumni not found") ||
+    message.includes("requires authentication")
   );
 };
 
@@ -171,6 +179,31 @@ export async function createAlumniEntry(formData, imageFile) {
 }
 
 export async function updateAlumniEntry(id, formData, imageFile, currentImage) {
+  if (String(id).startsWith("local-")) {
+    const current = getStoredAlumni();
+    const nextImage = imageFile ? await readFileAsDataUrl(imageFile) : currentImage;
+    const updatedItems = current.map((item) =>
+      item._id === id
+        ? {
+            ...item,
+            name: formData.name,
+            role: formData.role,
+            course: formData.course,
+            image: nextImage,
+            updatedAt: new Date().toISOString(),
+            isLocalFallback: true,
+          }
+        : item
+    );
+
+    saveStoredAlumni(updatedItems);
+
+    return {
+      data: updatedItems.find((item) => item._id === id),
+      source: "local",
+    };
+  }
+
   const payload = new FormData();
   payload.append("name", formData.name);
   payload.append("role", formData.role);
@@ -226,6 +259,15 @@ export async function updateAlumniEntry(id, formData, imageFile, currentImage) {
 }
 
 export async function deleteAlumniEntry(id) {
+  if (String(id).startsWith("local-")) {
+    const current = getStoredAlumni();
+    saveStoredAlumni(current.filter((item) => item._id !== id));
+
+    return {
+      source: "local",
+    };
+  }
+
   try {
     const { response, data } = await fetchJson(`/api/alumni/${id}`, {
       method: "DELETE",

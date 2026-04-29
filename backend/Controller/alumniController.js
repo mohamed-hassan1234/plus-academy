@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const mongoose = require("mongoose");
 const Alumni = require("../model/alumniModel");
 
 const uploadsRoot = path.join(__dirname, "..", "uploads");
@@ -130,6 +131,13 @@ const getAllAlumni = async (req, res) => {
 
 const getAlumniById = async (req, res) => {
   try {
+    if (!mongoose.isValidObjectId(req.params.id)) {
+      return res.status(404).json({
+        success: false,
+        message: "Alumni not found",
+      });
+    }
+
     const alumni = await Alumni.findById(req.params.id);
 
     if (!alumni) {
@@ -164,6 +172,17 @@ const updateAlumni = async (req, res) => {
       return res.status(400).json({
         success: false,
         message: "name, role, and course are required",
+      });
+    }
+
+    if (!mongoose.isValidObjectId(req.params.id)) {
+      if (req.file) {
+        removeUploadedFile(buildImagePath(req.file));
+      }
+
+      return res.status(404).json({
+        success: false,
+        message: "Alumni not found",
       });
     }
 
@@ -216,6 +235,13 @@ const updateAlumni = async (req, res) => {
 
 const deleteAlumni = async (req, res) => {
   try {
+    if (!mongoose.isValidObjectId(req.params.id)) {
+      return res.status(404).json({
+        success: false,
+        message: "Alumni not found",
+      });
+    }
+
     const deletedAlumni = await Alumni.findByIdAndDelete(req.params.id);
 
     if (!deletedAlumni) {
