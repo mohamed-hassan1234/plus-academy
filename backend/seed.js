@@ -73,6 +73,25 @@ seedDashboardUser()
   })
   .catch(async (error) => {
     console.error(`Seed failed: ${error.message}`);
+
+    if (/requires authentication|Authentication failed/i.test(error.message)) {
+      console.error(
+        [
+          "",
+          "MongoDB authentication is enabled on this server.",
+          "Update backend/.env with your real MongoDB user and password, for example:",
+          "",
+          "MONGODB_URI=mongodb://YOUR_MONGO_USER:YOUR_MONGO_PASSWORD@127.0.0.1:27017/plus_academyhub?authSource=admin",
+          "",
+          "Or keep MONGODB_URI local and add:",
+          "",
+          "MONGODB_USER=YOUR_MONGO_USER",
+          "MONGODB_PASSWORD=YOUR_MONGO_PASSWORD",
+          "MONGODB_AUTH_SOURCE=admin",
+        ].join("\n")
+      );
+    }
+
     await mongoose.disconnect().catch(() => {});
     process.exit(1);
   });

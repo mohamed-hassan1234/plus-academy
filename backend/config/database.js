@@ -33,15 +33,44 @@ const buildMongoUriFromParts = () => {
   )}@${normalizedHost}/${database}?authSource=${encodeURIComponent(authSource)}`;
 };
 
+const addAuthToMongoUri = (uri) => {
+  const username = firstConfiguredValue("MONGODB_USER", "MONGO_USER", "DB_USER");
+  const password = firstConfiguredValue(
+    "MONGODB_PASSWORD",
+    "MONGO_PASSWORD",
+    "DB_PASSWORD"
+  );
+
+  if (!username || !password) {
+    return uri;
+  }
+
+  const authenticatedUri = /mongodb(?:\+srv)?:\/\/[^/@]+@/i.test(uri)
+    ? uri
+    : uri.replace(
+        /^(mongodb(?:\+srv)?:\/\/)/i,
+        `$1${encodeCredential(username)}:${encodeCredential(password)}@`
+      );
+
+  if (/([?&])authSource=/i.test(authenticatedUri)) {
+    return authenticatedUri;
+  }
+
+  const authSource =
+    firstConfiguredValue("MONGODB_AUTH_SOURCE", "MONGO_AUTH_SOURCE") || "admin";
+  const separator = authenticatedUri.includes("?") ? "&" : "?";
+
+  return `${authenticatedUri}${separator}authSource=${encodeURIComponent(
+    authSource
+  )}`;
+};
+
 const getMongoUri = () =>
-  firstConfiguredValue(
-    "MONGODB_URI",
-    "MONGO_URI",
-    "MONGODB_URL",
-    "DATABASE_URL"
-  ) ||
-  buildMongoUriFromParts() ||
-  DEFAULT_MONGODB_URI;
+  addAuthToMongoUri(
+    firstConfiguredValue("MONGODB_URI", "MONGO_URI", "MONGODB_URL", "DATABASE_URL") ||
+      buildMongoUriFromParts() ||
+      DEFAULT_MONGODB_URI
+  );
 
 const maskMongoUri = (uri) =>
   uri.replace(/(mongodb(?:\+srv)?:\/\/)([^:@/]+):([^@/]+)@/i, "$1***:***@");
