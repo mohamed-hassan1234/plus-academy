@@ -28,7 +28,7 @@ const HackathonRegistrations = lazy(() => import("./Dashboard/HackathonRegistrat
 const ReadHackathonRegistration = lazy(() => import("./Dashboard/ReadHackathonRegistration"))
 const DashboardShell = lazy(() => import("./Dashboard/DashboardShell"))
 const DashboardLogin = lazy(() => import("./pages/DashboardLogin"))
-const DashboardRegister = lazy(() => import("./pages/DashboardRegister"))
+// const DashboardRegister = lazy(() => import("./pages/DashboardRegister"))
 const ManageUsers = lazy(() => import("./Dashboard/ManageUsers"))
 
 function RouteFallback({ withHeaderOffset = false }) {
@@ -38,7 +38,7 @@ function RouteFallback({ withHeaderOffset = false }) {
 function App () {
   return <>
   <Routes>
-      <Route path="/waji/register" element={<Suspense fallback={<RouteFallback />}><DashboardRegister /></Suspense>} />
+      {/* <Route path="/waji/register" element={<Suspense fallback={<RouteFallback />}><DashboardRegister /></Suspense>} /> */}
       <Route path="/waji/login" element={<Suspense fallback={<RouteFallback />}><DashboardLogin /></Suspense>} />
 
       <Route element={<DashboardProtectedRoute />}>
