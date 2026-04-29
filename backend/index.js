@@ -15,23 +15,35 @@ const dashboardAuthRouter = require("./Router/dashboardAuthRouter");
 
 const app = express();
 const PORT = Number(process.env.PORT) || 5000;
+
+const firstConfiguredValue = (...keys) =>
+  keys.map((key) => process.env[key]?.trim()).find(Boolean);
+
 const MONGODB_URI =
-  process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/elivateacademy";
+  firstConfiguredValue(
+    "MONGODB_URI",
+    "MONGO_URI",
+    "MONGODB_URL",
+    "DATABASE_URL"
+  ) || "mongodb://127.0.0.1:27017/plus_academyhub";
 const normalizeOrigin = (value = "") => value.trim().replace(/\/+$/, "");
-const allowedOrigins = (
-  process.env.CORS_ORIGINS ||
-  [
-    "https://plusacademyhub.com",
-    "https://www.plusacademyhub.com",
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-    "http://localhost:4173",
-    "http://127.0.0.1:4173",
-  ].join(",")
-)
+const defaultAllowedOrigins = [
+  "https://plusacademyhub.com",
+  "https://www.plusacademyhub.com",
+  "https://elivateacademy.com",
+  "https://www.elivateacademy.com",
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+  "http://localhost:4173",
+  "http://127.0.0.1:4173",
+];
+const configuredAllowedOrigins = (process.env.CORS_ORIGINS || "")
   .split(",")
   .map(normalizeOrigin)
   .filter(Boolean);
+const allowedOrigins = Array.from(
+  new Set([...defaultAllowedOrigins.map(normalizeOrigin), ...configuredAllowedOrigins])
+);
 const allowedOriginsSet = new Set(allowedOrigins);
 
 const corsOptions = {
@@ -50,6 +62,18 @@ const corsOptions = {
 app.use(express.json());
 app.use(cors(corsOptions));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+app.use("/api", (req, res, next) => {
+  if (mongoose.connection.readyState !== 1) {
+    return res.status(503).json({
+      success: false,
+      message:
+        "Database is not connected. Check the backend MongoDB environment variable in deployment.",
+    });
+  }
+
+  return next();
+});
 
 // Routes
 app.use("/api", registerRouter);
