@@ -139,7 +139,7 @@ function Getstarted1() {
               form below to begin your transformation.
             </SectionHeader>
 
-            <div className="cinematic-panel p-6 text-sm leading-relaxed text-white/64" data-cinematic>
+            {/* <div className="cinematic-panel p-6 text-sm leading-relaxed text-white/64" data-cinematic>
               <p>
                 Select an active class, add your learning details, and submit
                 your registration directly to the academy dashboard.
@@ -154,7 +154,7 @@ function Getstarted1() {
                   <p className="mt-1 text-white/62">Build practical projects while learning modern tech.</p>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
 
           <div className="cinematic-panel p-6 md:p-8" data-cinematic>
