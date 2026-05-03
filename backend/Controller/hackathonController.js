@@ -1,5 +1,12 @@
 const Hackathon = require("../model/hackathonModel");
 
+const EVENT_TYPES = Hackathon.EVENT_TYPES || [
+  "event",
+  "workshop",
+  "hackathon",
+  "graduation",
+];
+
 const parseBoolean = (value) => {
   if (typeof value === "boolean") {
     return value;
@@ -26,13 +33,40 @@ const normalizeImages = (images) => {
       .filter(Boolean);
   }
 
+  if (Array.isArray(images)) {
+    return images
+      .map((value) => String(value || "").replace(/\\/g, "/").trim())
+      .filter(Boolean);
+  }
+
   return images;
+};
+
+const EVENT_TYPE_ALIASES = {
+  events: "event",
+  workshops: "workshop",
+  workshoshp: "workshop",
+  worshoshp: "workshop",
+  hackathons: "hackathon",
+  graduations: "graduation",
+};
+
+const normalizeEventType = (eventType, fallback = "") => {
+  const normalized = String(eventType || fallback)
+    .trim()
+    .toLowerCase();
+  const aliasedEventType = EVENT_TYPE_ALIASES[normalized] || normalized;
+
+  return EVENT_TYPES.includes(aliasedEventType) ? aliasedEventType : "";
 };
 
 // POST - Create new hackathon
 const createHackathon = async (req, res) => {
   try {
     const {
+      eventType,
+      type,
+      category,
       title,
       description,
       date,
@@ -49,10 +83,23 @@ const createHackathon = async (req, res) => {
       });
     }
 
+    const normalizedEventType = normalizeEventType(
+      eventType || type || category,
+      "hackathon"
+    );
+
+    if (!normalizedEventType) {
+      return res.status(400).json({
+        success: false,
+        message: `eventType must be one of: ${EVENT_TYPES.join(", ")}`,
+      });
+    }
+
     const imagesArray = normalizeImages(images);
     const normalizedRegistrationOpen = parseBoolean(registrationOpen);
 
     const newHackathon = new Hackathon({
+      eventType: normalizedEventType,
       title,
       description,
       date,
@@ -83,7 +130,12 @@ const createHackathon = async (req, res) => {
 // GET - Get all hackathons
 const getAllHackathons = async (req, res) => {
   try {
-    const hackathons = await Hackathon.find().sort({ createdAt: -1 });
+    const eventType = normalizeEventType(req.query.eventType || "");
+    const query = eventType ? { eventType } : {};
+    const hackathons = await Hackathon.find(query).sort({
+      date: -1,
+      createdAt: -1,
+    });
 
     res.status(200).json({
       success: true,
@@ -131,6 +183,24 @@ const updateHackathon = async (req, res) => {
   try {
     const { id } = req.params;
     const updateData = { ...req.body };
+    const incomingEventType =
+      updateData.eventType ?? updateData.type ?? updateData.category;
+
+    delete updateData.type;
+    delete updateData.category;
+
+    if (incomingEventType !== undefined) {
+      const normalizedEventType = normalizeEventType(incomingEventType);
+
+      if (!normalizedEventType) {
+        return res.status(400).json({
+          success: false,
+          message: `eventType must be one of: ${EVENT_TYPES.join(", ")}`,
+        });
+      }
+
+      updateData.eventType = normalizedEventType;
+    }
 
     if (updateData.images !== undefined) {
       updateData.images = normalizeImages(updateData.images);

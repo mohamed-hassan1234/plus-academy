@@ -1,7 +1,17 @@
 const mongoose = require("mongoose");
 
+const EVENT_TYPES = ["event", "workshop", "hackathon", "graduation"];
+
 const hackathonSchema = new mongoose.Schema(
   {
+    eventType: {
+      type: String,
+      enum: EVENT_TYPES,
+      default: "hackathon",
+      index: true,
+      trim: true,
+      lowercase: true,
+    },
     title: {
       type: String,
       required: true,
@@ -51,4 +61,5 @@ const hackathonSchema = new mongoose.Schema(
 const Hackathon = mongoose.model("Hackathon", hackathonSchema);
 
 module.exports = Hackathon;
+module.exports.EVENT_TYPES = EVENT_TYPES;
 

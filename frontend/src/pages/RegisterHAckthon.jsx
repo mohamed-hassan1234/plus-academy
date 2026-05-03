@@ -16,6 +16,13 @@ const initialFormData = {
   studyRiseAcademy: "",
 };
 
+const EVENT_TYPE_LABELS = {
+  event: "Event",
+  workshop: "Workshop",
+  hackathon: "Hackathon",
+  graduation: "Graduation",
+};
+
 function RegisterHackthon() {
   const { id } = useParams();
   const [hackathon, setHackathon] = useState(null);
@@ -36,13 +43,13 @@ function RegisterHackthon() {
         } else {
           setMessage({
             type: "error",
-            text: data.message || "Hackathon not found.",
+            text: data.message || "Item not found.",
           });
         }
       } catch {
         setMessage({
           type: "error",
-          text: "We could not load this hackathon right now.",
+          text: "We could not load this item right now.",
         });
       } finally {
         setLoading(false);
@@ -94,7 +101,7 @@ function RegisterHackthon() {
         setFormData(initialFormData);
         setMessage({
           type: "success",
-          text: "Your hackathon registration was submitted successfully.",
+          text: "Your registration was submitted successfully.",
         });
       } else {
         setMessage({
@@ -127,13 +134,13 @@ function RegisterHackthon() {
       <PublicPage className="flex min-h-screen items-center justify-center px-6">
         <div className="max-w-xl space-y-4 text-center">
           <h1 className="text-2xl font-semibold text-white md:text-3xl">
-            Hackathon not found
+            Item not found
           </h1>
           <p className="text-sm text-white/64 md:text-base">
-            We could not find the hackathon you are trying to register for.
+            We could not find the item you are trying to register for.
           </p>
           <MagneticButton to="/hackathons">
-            Back to hackathons
+            Back to events
           </MagneticButton>
         </div>
       </PublicPage>
@@ -144,13 +151,16 @@ function RegisterHackthon() {
   const formattedDate = hackathon.date
     ? new Date(hackathon.date).toLocaleDateString()
     : "";
+  const eventTypeLabel =
+    EVENT_TYPE_LABELS[hackathon.eventType || "hackathon"] || "Hackathon";
+  const eventTypeLabelLower = eventTypeLabel.toLowerCase();
 
   return (
     <PublicPage className="min-h-screen py-16 md:py-20">
       <div className="mx-auto max-w-5xl px-6 md:px-10 lg:px-0">
         <div className="mb-6 flex items-center gap-2 text-xs text-white/46 md:text-sm" data-cinematic>
           <Link to="/hackathons" className="transition-colors hover:text-[#4FFFEA]">
-            Hackathons
+            Events
           </Link>
           <span>/</span>
           <Link
@@ -166,14 +176,14 @@ function RegisterHackthon() {
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_420px]">
           <section className="cinematic-panel p-6 md:p-8" data-cinematic>
             <p className="text-xs uppercase text-[#4FFFEA]">
-              Hackathon registration
+              {eventTypeLabel} registration
             </p>
             <h1 className="mt-3 text-2xl font-semibold text-white md:text-3xl">
               Join {hackathon.title}
             </h1>
             <p className="mt-3 text-sm leading-relaxed text-white/64 md:text-base">
               Fill in your real details so the team can review your application
-              for this hackathon.
+              for this {eventTypeLabelLower}.
             </p>
 
             {message.text && (
@@ -194,11 +204,11 @@ function RegisterHackthon() {
                   Registration has ended
                 </h2>
                 <p className="mt-2 text-sm text-amber-100/80">
-                  The registration time for this hackathon is over. Please check
-                  back for the next hackathon.
+                  The registration time for this {eventTypeLabelLower} is over. Please check
+                  back for the next event.
                 </p>
                 <MagneticButton to={`/hackathons/${hackathon._id}`} className="mt-4">
-                  Back to hackathon page
+                  Back to details
                 </MagneticButton>
               </div>
             ) : submitted ? (
@@ -208,17 +218,17 @@ function RegisterHackthon() {
                 </h2>
                 <p className="mt-2 text-sm text-emerald-100/80">
                   Your details were saved successfully. The team can now review
-                  your hackathon registration.
+                  your {eventTypeLabelLower} registration.
                 </p>
                 <MagneticButton to={`/hackathons/${hackathon._id}`} className="mt-4">
-                  Return to hackathon page
+                  Return to details
                 </MagneticButton>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="cinematic-form mt-8 space-y-5">
                 <div>
                   <label className="mb-2 block text-sm font-medium text-white/72">
-                    Selected hackathon
+                    Selected {eventTypeLabelLower}
                   </label>
                   <input
                     type="text"
@@ -439,7 +449,7 @@ function RegisterHackthon() {
               <p className="mt-2 leading-relaxed">
                 This form saves your name, email, WhatsApp number, where you
                 live, education, computer availability, and other registration
-                details for this specific hackathon.
+                details for this specific {eventTypeLabelLower}.
               </p>
             </div>
           </aside>

@@ -2,6 +2,16 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { apiUrl } from "../utils/api";
 
+const EVENT_TYPES = [
+  { value: "event", label: "Event" },
+  { value: "workshop", label: "Workshop" },
+  { value: "hackathon", label: "Hackathon" },
+  { value: "graduation", label: "Graduation" },
+];
+
+const getEventTypeLabel = (eventType) =>
+  EVENT_TYPES.find((type) => type.value === eventType)?.label || "Hackathon";
+
 function HackathonManagement() {
   const [hackathons, setHackathons] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -10,6 +20,7 @@ function HackathonManagement() {
   const [message, setMessage] = useState({ type: "", text: "" });
 
   const [formData, setFormData] = useState({
+    eventType: "hackathon",
     title: "",
     description: "",
     date: "",
@@ -52,6 +63,7 @@ function HackathonManagement() {
   const resetForm = () => {
     setEditingHackathon(null);
     setFormData({
+      eventType: "hackathon",
       title: "",
       description: "",
       date: "",
@@ -70,6 +82,7 @@ function HackathonManagement() {
 
     if (
       !formData.title ||
+      !formData.eventType ||
       !formData.description ||
       !formData.date ||
       !formData.location ||
@@ -77,7 +90,7 @@ function HackathonManagement() {
     ) {
       setMessage({
         type: "error",
-        text: "Title, description, date, location and details are required",
+        text: "Type, title, description, date, location and details are required",
       });
       return;
     }
@@ -97,6 +110,9 @@ function HackathonManagement() {
       const method = editingHackathon ? "PUT" : "POST";
 
       const payload = {
+        eventType: formData.eventType,
+        type: formData.eventType,
+        category: formData.eventType,
         title: formData.title,
         description: formData.description,
         date: formData.date,
@@ -120,8 +136,8 @@ function HackathonManagement() {
         setMessage({
           type: "success",
           text: editingHackathon
-            ? "Hackathon updated successfully!"
-            : "Hackathon created successfully!",
+            ? "Published item updated successfully!"
+            : "Published item created successfully!",
         });
         setShowForm(false);
         resetForm();
@@ -130,7 +146,7 @@ function HackathonManagement() {
       } else {
         setMessage({
           type: "error",
-          text: data.message || "Error saving hackathon",
+          text: data.message || "Error saving item",
         });
       }
     } catch {
@@ -144,6 +160,7 @@ function HackathonManagement() {
   const handleEdit = (hack) => {
     setEditingHackathon(hack);
     setFormData({
+      eventType: hack.eventType || "hackathon",
       title: hack.title || "",
       description: hack.description || "",
       date: hack.date
@@ -198,7 +215,7 @@ function HackathonManagement() {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this hackathon?")) {
+    if (!window.confirm("Are you sure you want to delete this item?")) {
       return;
     }
 
@@ -213,10 +230,10 @@ function HackathonManagement() {
       const data = await response.json();
 
       if (response.ok && data.success) {
-        alert("Hackathon deleted successfully!");
+        alert("Item deleted successfully!");
         fetchHackathons();
       } else {
-        alert(data.message || "Error deleting hackathon");
+        alert(data.message || "Error deleting item");
       }
     } catch {
       alert("Network error. Please try again.");
@@ -230,10 +247,10 @@ function HackathonManagement() {
           <div className="mb-8 flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold text-white mb-2">
-                Hackathon Management
+                Events, Workshops & Hackathons
               </h1>
               <p className="text-gray-400">
-                Create, edit, and manage hackathons shown on the website
+                Create and publish events, workshops, hackathons, and graduations shown on the website
               </p>
             </div>
             <button
@@ -256,7 +273,7 @@ function HackathonManagement() {
                   d="M12 4v16m8-8H4"
                 />
               </svg>
-              Create Hackathon
+              Create Item
             </button>
           </div>
 
@@ -277,10 +294,28 @@ function HackathonManagement() {
           {showForm && (
             <div className="bg-[#070F24]/90 border border-white/10 rounded-xl p-6 mb-6">
               <h2 className="text-xl font-bold text-white mb-4">
-                {editingHackathon ? "Edit Hackathon" : "Create New Hackathon"}
+                {editingHackathon ? "Edit Published Item" : "Create New Published Item"}
               </h2>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-gray-300 mb-2">
+                      Type *
+                    </label>
+                    <select
+                      name="eventType"
+                      value={formData.eventType}
+                      onChange={handleChange}
+                      className="w-full rounded-lg bg-[#020617]/70 border border-white/10 px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      required
+                    >
+                      {EVENT_TYPES.map((type) => (
+                        <option key={type.value} value={type.value}>
+                          {type.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                   <div>
                     <label className="block text-gray-300 mb-2">
                       Title *
@@ -349,7 +384,7 @@ function HackathonManagement() {
                     value={formData.details}
                     onChange={handleChange}
                     rows={4}
-                    placeholder="Faahfaahin dheeraad ah oo ku saabsan hackathon‑ka (what happened, goals, etc.)"
+                    placeholder="Faahfaahin dheeraad ah oo ku saabsan dhacdadan (what happened, goals, guests, outcomes, etc.)"
                     className="w-full rounded-lg bg-[#020617]/70 border border-white/10 px-4 py-2 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
                     required
                   />
@@ -368,7 +403,7 @@ function HackathonManagement() {
                       Registration is open
                     </p>
                     <p className="text-xs text-gray-400">
-                      Turn this off to show users that registration has ended.
+                      Turn this off for past events, graduation showcases, or anything that should only be displayed.
                     </p>
                   </div>
                 </label>
@@ -420,7 +455,7 @@ function HackathonManagement() {
                     type="submit"
                     className="px-6 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-all"
                   >
-                    {editingHackathon ? "Update Hackathon" : "Create Hackathon"}
+                    {editingHackathon ? "Update Item" : "Create Item"}
                   </button>
                   <button
                     type="button"
@@ -437,13 +472,13 @@ function HackathonManagement() {
             </div>
           )}
 
-          {/* Hackathons List */}
+          {/* Published Items List */}
           <div className="bg-[#070F24]/90 border border-white/10 rounded-xl overflow-hidden">
             {loading ? (
               <div className="p-8 text-center text-gray-400">Loading...</div>
             ) : hackathons.length === 0 ? (
               <div className="p-8 text-center text-gray-400">
-                No hackathons found. Create your first hackathon!
+                No published items found. Create your first event, workshop, hackathon, or graduation.
               </div>
             ) : (
               <div className="overflow-x-auto">
@@ -452,6 +487,9 @@ function HackathonManagement() {
                     <tr>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                         Title
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                        Type
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                         Date
@@ -475,6 +513,9 @@ function HackathonManagement() {
                       >
                         <td className="px-6 py-4 whitespace-nowrap text-white font-medium">
                           {hack.title}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-gray-300">
+                          {getEventTypeLabel(hack.eventType)}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-gray-300">
                           {hack.date

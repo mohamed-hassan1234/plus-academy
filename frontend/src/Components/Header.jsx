@@ -6,7 +6,7 @@ import MagneticButton from "./Immersive/MagneticButton";
 const navLinks = [
   { label: "Home", to: "/" },
   { label: "About", to: "/about" },
-  { label: "Hackathons", to: "/hackathons" },
+  { label: "Events", to: "/hackathons" },
   { label: "Curriculum", to: "/curriculum" },
   { label: "Alumni", to: "/alumni" },
   { label: "Contact", to: "/contact" },

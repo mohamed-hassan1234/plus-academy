@@ -2,6 +2,17 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { apiUrl } from "../utils/api";
 
+const EVENT_TYPE_LABELS = {
+  event: "Event",
+  workshop: "Workshop",
+  hackathon: "Hackathon",
+  graduation: "Graduation",
+};
+
+const EVENT_TYPE_OPTIONS = Object.entries(EVENT_TYPE_LABELS).map(
+  ([value, label]) => ({ value, label })
+);
+
 function HackathonRegistrations() {
   const navigate = useNavigate();
   const [registrations, setRegistrations] = useState([]);
@@ -10,6 +21,7 @@ function HackathonRegistrations() {
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState({
     hackathonId: "",
+    eventType: "",
     gender: "",
     highestEducation: "",
     mernStackExperience: "",
@@ -47,6 +59,7 @@ function HackathonRegistrations() {
 
       if (search) params.append("search", search);
       if (filters.hackathonId) params.append("hackathonId", filters.hackathonId);
+      if (filters.eventType) params.append("eventType", filters.eventType);
       if (filters.gender) params.append("gender", filters.gender);
       if (filters.highestEducation)
         params.append("highestEducation", filters.highestEducation);
@@ -140,6 +153,23 @@ function HackathonRegistrations() {
     return "-";
   };
 
+  const getRegistrationEventType = (registration) => {
+    if (registration?.eventType) {
+      return registration.eventType;
+    }
+
+    const registrationHackathonId =
+      registration?.hackathonId?._id || registration?.hackathonId || "";
+    const matchedHackathon = hackathons.find(
+      (hackathon) => hackathon._id === registrationHackathonId
+    );
+
+    return matchedHackathon?.eventType || "hackathon";
+  };
+
+  const getEventTypeLabel = (eventType) =>
+    EVENT_TYPE_LABELS[eventType] || "Hackathon";
+
   return (
     <div className="dashboard-page">
       <div className="max-w-7xl mx-auto">
@@ -147,7 +177,7 @@ function HackathonRegistrations() {
           <div className="mb-8 flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold text-white mb-2">
-                Hackathon Registrations
+                Event Registrations
               </h1>
               <p className="text-gray-400">
                 View all people who registered ({registrations.length})
@@ -161,7 +191,7 @@ function HackathonRegistrations() {
               <div className="flex gap-3">
                 <input
                   type="text"
-                  placeholder="Search by name, email, WhatsApp, or hackathon..."
+                  placeholder="Search by name, email, WhatsApp, or event..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   onKeyPress={(e) => e.key === "Enter" && handleSearch()}
@@ -175,7 +205,7 @@ function HackathonRegistrations() {
                 </button>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-7 gap-4">
                 <select
                   value={filters.hackathonId}
                   onChange={(e) =>
@@ -183,10 +213,25 @@ function HackathonRegistrations() {
                   }
                   className="rounded-lg bg-[#020617]/70 border border-white/10 px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 >
-                  <option value="">All Hackathons</option>
+                  <option value="">All events</option>
                   {hackathons.map((hack) => (
                     <option key={hack._id} value={hack._id}>
-                      {hack.title}
+                      {getEventTypeLabel(hack.eventType)} - {hack.title}
+                    </option>
+                  ))}
+                </select>
+
+                <select
+                  value={filters.eventType}
+                  onChange={(e) =>
+                    handleFilterChange("eventType", e.target.value)
+                  }
+                  className="rounded-lg bg-[#020617]/70 border border-white/10 px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                >
+                  <option value="">All types</option>
+                  {EVENT_TYPE_OPTIONS.map((type) => (
+                    <option key={type.value} value={type.value}>
+                      {type.label}
                     </option>
                   ))}
                 </select>
@@ -269,7 +314,10 @@ function HackathonRegistrations() {
                   <thead className="bg-[#020617]/50 border-b border-white/10">
                     <tr>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                        Hackathon
+                        Event
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                        Type
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                         Name
@@ -311,6 +359,9 @@ function HackathonRegistrations() {
                       >
                         <td className="px-6 py-4 whitespace-nowrap text-gray-300">
                           {getHackathonName(reg)}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-gray-300">
+                          {getEventTypeLabel(getRegistrationEventType(reg))}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-white font-medium">
                           {reg.fullName}

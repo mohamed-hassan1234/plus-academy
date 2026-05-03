@@ -12,6 +12,14 @@ const registrationSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    eventType: {
+      type: String,
+      enum: ["event", "workshop", "hackathon", "graduation"],
+      default: "hackathon",
+      index: true,
+      trim: true,
+      lowercase: true,
+    },
     fullName: {
       type: String,
       required: true,

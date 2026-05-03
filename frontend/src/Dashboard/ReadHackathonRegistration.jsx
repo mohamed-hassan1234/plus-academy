@@ -2,6 +2,13 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { apiUrl } from "../utils/api";
 
+const EVENT_TYPE_LABELS = {
+  event: "Event",
+  workshop: "Workshop",
+  hackathon: "Hackathon",
+  graduation: "Graduation",
+};
+
 function ReadHackathonRegistration() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -80,11 +87,28 @@ function ReadHackathonRegistration() {
     return "-";
   };
 
+  const getRegistrationEventType = () => {
+    if (registration?.eventType) {
+      return registration.eventType;
+    }
+
+    const registrationHackathonId =
+      registration?.hackathonId?._id || registration?.hackathonId || "";
+    const matchedHackathon = hackathons.find(
+      (hackathon) => hackathon._id === registrationHackathonId
+    );
+
+    return matchedHackathon?.eventType || "hackathon";
+  };
+
+  const getEventTypeLabel = (eventType) =>
+    EVENT_TYPE_LABELS[eventType] || "Hackathon";
+
   const handleHackathonUpdate = async () => {
     if (!selectedHackathonId) {
       setMessage({
         type: "error",
-        text: "Please select a hackathon first.",
+        text: "Please select an event first.",
       });
       return;
     }
@@ -113,12 +137,12 @@ function ReadHackathonRegistration() {
         );
         setMessage({
           type: "success",
-          text: "Hackathon linked to this registration successfully.",
+          text: "Event linked to this registration successfully.",
         });
       } else {
         setMessage({
           type: "error",
-          text: data.message || "Could not update hackathon.",
+          text: data.message || "Could not update event.",
         });
       }
     } catch {
@@ -193,7 +217,7 @@ function ReadHackathonRegistration() {
 
             <div className="mb-6 rounded-xl border border-white/10 bg-[#020617]/50 p-4">
               <p className="mb-3 text-sm font-medium text-white">
-                Fix hackathon for this registration
+                Fix event for this registration
               </p>
               <div className="flex flex-col gap-3 md:flex-row">
                 <select
@@ -201,10 +225,10 @@ function ReadHackathonRegistration() {
                   onChange={(event) => setSelectedHackathonId(event.target.value)}
                   className="flex-1 rounded-lg bg-[#020617]/70 border border-white/10 px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 >
-                  <option value="">Select hackathon</option>
+                  <option value="">Select event</option>
                   {hackathons.map((hackathon) => (
                     <option key={hackathon._id} value={hackathon._id}>
-                      {hackathon.title}
+                      {getEventTypeLabel(hackathon.eventType)} - {hackathon.title}
                     </option>
                   ))}
                 </select>
@@ -214,20 +238,27 @@ function ReadHackathonRegistration() {
                   disabled={savingHackathon}
                   className="rounded-lg bg-indigo-500 px-5 py-2 text-white transition hover:bg-indigo-600 disabled:cursor-not-allowed disabled:opacity-70"
                 >
-                  {savingHackathon ? "Saving..." : "Save hackathon"}
+                  {savingHackathon ? "Saving..." : "Save event"}
                 </button>
               </div>
               <p className="mt-2 text-xs text-gray-400">
                 Use this for older registrations that are missing the linked
-                hackathon.
+                event.
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
               <div>
-                <p className="text-gray-400 mb-1">Hackathon</p>
+                <p className="text-gray-400 mb-1">Event</p>
                 <p className="text-white font-medium">
                   {getHackathonName()}
+                </p>
+              </div>
+
+              <div>
+                <p className="text-gray-400 mb-1">Type</p>
+                <p className="text-white font-medium">
+                  {getEventTypeLabel(getRegistrationEventType())}
                 </p>
               </div>
 

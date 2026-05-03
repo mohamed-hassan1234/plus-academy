@@ -4,6 +4,27 @@ import { apiUrl } from "../../utils/api";
 import MagneticButton from "../Immersive/MagneticButton";
 import PublicPage from "../Immersive/PublicPage";
 
+const EVENT_TYPE_LABELS = {
+  event: "Event",
+  workshop: "Workshop",
+  hackathon: "Hackathon",
+  graduation: "Graduation",
+};
+
+const resolvePublicImageSrc = (imagePath) => {
+  if (!imagePath) {
+    return "";
+  }
+
+  const normalizedPath = String(imagePath).replace(/\\/g, "/").trim();
+
+  if (/^(https?:\/\/|data:|blob:|\/)/i.test(normalizedPath)) {
+    return normalizedPath;
+  }
+
+  return `/${normalizedPath}`;
+};
+
 function HackthonDetails() {
   const { id } = useParams();
   const [hack, setHack] = useState(null);
@@ -34,7 +55,7 @@ function HackthonDetails() {
     return (
       <PublicPage className="flex min-h-screen items-center justify-center px-6">
         <p className="text-sm text-white/60 md:text-base">
-          Loading hackathon details...
+          Loading event details...
         </p>
       </PublicPage>
     );
@@ -45,13 +66,13 @@ function HackthonDetails() {
       <PublicPage className="flex min-h-screen items-center justify-center px-6">
         <div className="max-w-xl space-y-4 text-center">
           <h1 className="text-2xl font-semibold text-white md:text-3xl">
-            Hackathon lama helin
+            Event lama helin
           </h1>
           <p className="text-sm text-white/64 md:text-base">
-            Ma helin hackathon leh ID-ga aad isku dayday in aad furto. Fadlan
-            kusoo noqo liiska hackathon-nada.
+            Ma helin event leh ID-ga aad isku dayday in aad furto. Fadlan
+            kusoo noqo liiska events-ka.
           </p>
-          <MagneticButton to="/hackathons">Back to Hackathons</MagneticButton>
+          <MagneticButton to="/hackathons">Back to Events</MagneticButton>
         </div>
       </PublicPage>
     );
@@ -61,13 +82,16 @@ function HackthonDetails() {
     ? new Date(hack.date).toLocaleDateString()
     : "";
   const registrationOpen = hack.registrationOpen !== false;
+  const eventType = hack.eventType || "hackathon";
+  const eventTypeLabel = EVENT_TYPE_LABELS[eventType] || "Hackathon";
+  const eventTypeLabelLower = eventTypeLabel.toLowerCase();
 
   return (
     <PublicPage className="min-h-screen py-16 md:py-20">
       <div className="mx-auto max-w-5xl px-6 md:px-10 lg:px-0">
         <div className="mb-6 flex items-center gap-2 text-xs text-white/46 md:text-sm" data-cinematic>
           <Link to="/hackathons" className="transition-colors hover:text-[#4FFFEA]">
-            Hackathons
+            Events
           </Link>
           <span>/</span>
           <span className="line-clamp-1 text-white/66">{hack.title}</span>
@@ -78,7 +102,7 @@ function HackthonDetails() {
             <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
               <div className="max-w-xl space-y-3">
                 <p className="text-xs uppercase text-[#4FFFEA]">
-                  PlusAcademy Hackathon
+                  PlusAcademy {eventTypeLabel}
                 </p>
                 <h1 className="text-2xl font-semibold leading-tight text-white md:text-3xl">
                   {hack.title}
@@ -107,7 +131,7 @@ function HackthonDetails() {
         {hack.images && hack.images.length > 0 && (
           <section className="mb-10" data-cinematic>
             <h2 className="mb-4 text-lg font-semibold text-white md:text-xl">
-              Muuqaallo ka socda hackathon-ka
+              Muuqaallo ka socda {eventTypeLabelLower}-kan
             </h2>
             <div className="grid gap-4 md:grid-cols-3">
               {hack.images.slice(0, 4).map((src, index) => (
@@ -116,7 +140,7 @@ function HackthonDetails() {
                   className="image-mask-reveal cinematic-panel h-44"
                 >
                   <img
-                    src={src}
+                    src={resolvePublicImageSrc(src)}
                     alt={`${hack.title} team photo ${index + 1}`}
                   />
                 </div>
@@ -128,7 +152,7 @@ function HackthonDetails() {
         <section className="grid items-start gap-8 md:grid-cols-[minmax(0,2fr)_minmax(0,1.4fr)]">
           <div className="space-y-5" data-cinematic>
             <h2 className="text-lg font-semibold text-white md:text-xl">
-              Faahfaahinta hackathon-kan
+              Faahfaahinta {eventTypeLabelLower}-kan
             </h2>
             <p className="text-sm leading-relaxed text-white/64 md:text-base">
               {hack.details}
@@ -138,21 +162,21 @@ function HackthonDetails() {
           <aside className="space-y-4">
             <div className="cinematic-panel px-5 py-4" data-cinematic>
               <p className="mb-2 text-sm font-semibold text-white">
-                Ma xiisaynaysaa hackathon-ka xiga?
+                Ma xiisaynaysaa {eventTypeLabelLower}-kan?
               </p>
               <p className="mb-4 text-xs text-white/62 md:text-sm">
-                Buuxi form-ka si aad ugu biirto hackathon-kan. Waxaan kaa
+                Buuxi form-ka si aad ugu biirto {eventTypeLabelLower}-kan. Waxaan kaa
                 weydiin doonaa magacaaga, meesha aad dagan tahay, email-ka,
                 waxbarashadaada, iyo haddii aad haysato computer.
               </p>
               {registrationOpen ? (
                 <MagneticButton to={`/hackathons/${hack._id}/register`} className="w-full">
-                  Join this hackathon
+                  Join this {eventTypeLabelLower}
                 </MagneticButton>
               ) : (
                 <div className="space-y-3">
                   <div className="rounded-lg border border-amber-300/35 bg-amber-400/10 px-4 py-3 text-xs text-amber-200 md:text-sm">
-                    Registration for this hackathon has ended.
+                    Registration for this {eventTypeLabelLower} has ended.
                   </div>
                   <button
                     type="button"
@@ -170,8 +194,8 @@ function HackthonDetails() {
                 Macallin / Partner mise Sponsor?
               </p>
               <p>
-                Haddii aad rabto in aad nala shaqayso hackathon-nada xiga sida
-                mentor, judge ama sponsor, fadlan nala soo xiriir.
+                Haddii aad rabto in aad nala shaqayso events-ka xiga sida
+                mentor, speaker ama sponsor, fadlan nala soo xiriir.
               </p>
               <Link
                 to="/contact"

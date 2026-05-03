@@ -91,9 +91,9 @@ export const dashboardNavigation = [
     ),
   },
   {
-    label: "Hackathons",
+    label: "Events",
     path: "/waji/hackathons",
-    description: "Create and publish hackathons",
+    description: "Create events, workshops, hackathons, and graduations",
     icon: (
       <path
         strokeLinecap="round"
