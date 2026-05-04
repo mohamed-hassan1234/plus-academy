@@ -115,7 +115,9 @@ function Getstarted1() {
           hasLaptop: "",
           className: "",
         });
-        window.location.assign(FACEBOOK_PROFILE_URL);
+        window.setTimeout(() => {
+          window.location.assign(FACEBOOK_PROFILE_URL);
+        }, 1000);
       } else {
         setMessage({
           type: "error",
