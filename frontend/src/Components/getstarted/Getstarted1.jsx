@@ -3,6 +3,8 @@ import { apiUrl } from "../../utils/api";
 import MagneticButton from "../Immersive/MagneticButton";
 import SectionHeader from "../Immersive/SectionHeader";
 
+const FACEBOOK_PROFILE_URL = "https://www.facebook.com/profile.php?id=61573298768792";
+
 function Getstarted1() {
   const [formData, setFormData] = useState({
     fullName: "",
@@ -100,7 +102,7 @@ function Getstarted1() {
       if (response.ok) {
         setMessage({
           type: "success",
-          text: "Registration successful! Welcome to our tech community.",
+          text: "Registration successful! Redirecting you to our Facebook page.",
         });
         setFormData({
           fullName: "",
@@ -113,6 +115,7 @@ function Getstarted1() {
           hasLaptop: "",
           className: "",
         });
+        window.location.assign(FACEBOOK_PROFILE_URL);
       } else {
         setMessage({
           type: "error",
