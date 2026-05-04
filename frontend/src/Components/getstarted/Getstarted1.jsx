@@ -2,8 +2,10 @@ import { useState, useEffect } from "react";
 import { apiUrl } from "../../utils/api";
 import MagneticButton from "../Immersive/MagneticButton";
 import SectionHeader from "../Immersive/SectionHeader";
+import { FaCheckCircle } from "react-icons/fa";
 
 const FACEBOOK_PROFILE_URL = "https://www.facebook.com/profile.php?id=61573298768792";
+const FACEBOOK_REDIRECT_DELAY = 1000;
 
 function Getstarted1() {
   const [formData, setFormData] = useState({
@@ -22,6 +24,7 @@ function Getstarted1() {
   const [message, setMessage] = useState({ type: "", text: "" });
   const [classes, setClasses] = useState([]);
   const [loadingClasses, setLoadingClasses] = useState(true);
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
   useEffect(() => {
     fetchClasses();
@@ -77,6 +80,7 @@ function Getstarted1() {
     }
 
     setLoading(true);
+    setIsRedirecting(false);
 
     try {
       const response = await fetch(apiUrl("/api/register"), {
@@ -102,8 +106,9 @@ function Getstarted1() {
       if (response.ok) {
         setMessage({
           type: "success",
-          text: "Registration successful! Redirecting you to our Facebook page.",
+          text: "Registration successful!",
         });
+        setIsRedirecting(true);
         setFormData({
           fullName: "",
           email: "",
@@ -117,7 +122,7 @@ function Getstarted1() {
         });
         window.setTimeout(() => {
           window.location.assign(FACEBOOK_PROFILE_URL);
-        }, 1000);
+        }, FACEBOOK_REDIRECT_DELAY);
       } else {
         setMessage({
           type: "error",
@@ -136,6 +141,34 @@ function Getstarted1() {
 
   return (
     <section className="immersive-section">
+      {isRedirecting && message.type === "success" && (
+        <div
+          className="fixed inset-0 z-[999] flex items-center justify-center bg-[#020617]/80 px-5 backdrop-blur-md"
+          role="alertdialog"
+          aria-live="assertive"
+          aria-labelledby="registration-success-title"
+        >
+          <div className="w-full max-w-md rounded-lg border border-[#4FFFEA]/35 bg-[#071426] p-7 text-center shadow-2xl shadow-[#00A99D]/20">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border border-emerald-300/40 bg-emerald-400/15 text-emerald-200">
+              <FaCheckCircle className="text-3xl" aria-hidden="true" />
+            </div>
+            <h2
+              id="registration-success-title"
+              className="mt-5 text-2xl font-semibold text-white"
+            >
+              Registration successful
+            </h2>
+            <p className="mt-3 text-sm leading-6 text-white/68">
+              Your class registration has been received. Redirecting to our
+              Facebook page now.
+            </p>
+            <div className="mx-auto mt-6 h-1.5 w-32 overflow-hidden rounded-full bg-white/10">
+              <div className="h-full w-full animate-pulse rounded-full bg-[#4FFFEA]" />
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="immersive-container">
         <div className="grid items-start gap-8 lg:grid-cols-[0.8fr_1.2fr]">
           <div>
@@ -163,7 +196,7 @@ function Getstarted1() {
           </div>
 
           <div className="cinematic-panel p-6 md:p-8" data-cinematic>
-            {message.text && (
+            {message.text && message.type !== "success" && (
               <div
                 className={`mb-6 rounded-lg border p-4 ${
                   message.type === "success"
@@ -331,7 +364,7 @@ function Getstarted1() {
 
                 <MagneticButton
                   type="submit"
-                  disabled={loading}
+                  disabled={loading || isRedirecting}
                   className="w-full"
                 >
                   {loading ? "Registering..." : "Start Your Tech Journey"}
