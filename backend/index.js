@@ -1,9 +1,9 @@
-require("dotenv").config();
-
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
+
+require("dotenv").config({ path: path.join(__dirname, ".env") });
 const registerRouter = require("./Router/registerRouter");
 const classRouter = require("./Router/classRouter");
 const contactRouter = require("./Router/contactRouter");
@@ -53,6 +53,29 @@ const corsOptions = {
 app.use(express.json());
 app.use(cors(corsOptions));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+app.get("/", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Plus Academy API is running.",
+  });
+});
+
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    success: true,
+    service: "plus-academy-api",
+    database: mongoose.connection.readyState === 1 ? "connected" : "disconnected",
+  });
+});
+
+app.get("/api/health", (req, res) => {
+  res.status(200).json({
+    success: true,
+    service: "plus-academy-api",
+    database: mongoose.connection.readyState === 1 ? "connected" : "disconnected",
+  });
+});
 
 app.use("/api", (req, res, next) => {
   if (mongoose.connection.readyState !== 1) {
